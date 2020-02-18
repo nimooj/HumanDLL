@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bone.h" />
+    <ClInclude Include="BoneDefinition.h" />
     <ClInclude Include="GrahamScan.h" />
     <ClInclude Include="HumanOBJ.h" />
     <ClInclude Include="Joint.h" />

@@ -3,13 +3,12 @@
 #include "Joint.h"
 
 class Bone {
-public :
+public:
 	Bone();
-	Bone(Joint&, Joint&);
+	Bone(int, int);
+	Bone(int, int, int);
 	~Bone();
 
-	//vector<Joint*> getJoints();
-
-private :
-	Joint* j1, *j2;
+	int parentBone;
+	int upperJoint, lowerJoint;
 };

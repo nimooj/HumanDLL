@@ -172,14 +172,8 @@ void Skinning::setSegments(vector<Vertex>& vertices, vector<Joint>& joints, vect
 	}
 
 	// Upper Leg 
-	j = joints[Joint_highLegR].getCoord();
-	for (int i = 0; i < weightSegment[Joint_highLegR].size(); i++) {
-		Vertex v = vertices[weightSegment[Joint_highLegR][i]];
-		bodySegment[Segment_UpperLegR].push_back(v.idx);
-	}
-
 	j = joints[Joint_kneeR].getCoord();
-	Vertex n = joints[Joint_highLegR].getCoord() - j;
+	Vertex n = joints[Joint_pelvisR].getCoord() - j;
 
 	for (int i = 0; i < weightSegment[Joint_kneeR].size(); i++) {
 		Vertex v = vertices[weightSegment[Joint_kneeR][i]];
@@ -193,14 +187,8 @@ void Skinning::setSegments(vector<Vertex>& vertices, vector<Joint>& joints, vect
 		}
 	}
 
-	j = joints[Joint_highLegL].getCoord();
-	for (int i = 0; i < weightSegment[Joint_highLegL].size(); i++) {
-		Vertex v = vertices[weightSegment[Joint_highLegL][i]];
-		bodySegment[Segment_UpperLegL].push_back(v.idx);
-	}
-
 	j = joints[Joint_kneeL].getCoord();
-	n = joints[Joint_highLegL].getCoord() - j;
+	n = joints[Joint_pelvisL].getCoord() - j;
 
 	for (int i = 0; i < weightSegment[Joint_kneeL].size(); i++) {
 		Vertex v = vertices[weightSegment[Joint_kneeL][i]];
@@ -471,7 +459,6 @@ void Skinning::setSegments(vector<Vertex>& vertices, vector<Joint>& joints, vect
 
 	legRSegment.insert(legRSegment.end(), weightSegment[Joint_pelvisMid].begin(), weightSegment[Joint_pelvisMid].end());
 	legRSegment.insert(legRSegment.end(), weightSegment[Joint_pelvisR].begin(), weightSegment[Joint_pelvisR].end());
-	legRSegment.insert(legRSegment.end(), weightSegment[Joint_highLegR].begin(), weightSegment[Joint_highLegR].end());
 	legRSegment.insert(legRSegment.end(), weightSegment[Joint_kneeR].begin(), weightSegment[Joint_kneeR].end());
 	legRSegment.insert(legRSegment.end(), weightSegment[Joint_ankleR].begin(), weightSegment[Joint_ankleR].end());
 
@@ -520,7 +507,6 @@ void Skinning::setSegments(vector<Vertex>& vertices, vector<Joint>& joints, vect
 
 	legLSegment.insert(legLSegment.end(), weightSegment[Joint_pelvisMid].begin(), weightSegment[Joint_pelvisMid].end());
 	legLSegment.insert(legLSegment.end(), weightSegment[Joint_pelvisL].begin(), weightSegment[Joint_pelvisL].end());
-	legLSegment.insert(legLSegment.end(), weightSegment[Joint_highLegL].begin(), weightSegment[Joint_highLegL].end());
 	legLSegment.insert(legLSegment.end(), weightSegment[Joint_kneeL].begin(), weightSegment[Joint_kneeL].end());
 	legLSegment.insert(legLSegment.end(), weightSegment[Joint_ankleL].begin(), weightSegment[Joint_ankleL].end());
 
@@ -761,7 +747,6 @@ void Skinning::paintWeights(int part, vector<Vertex>& vertices, vector<Joint>& j
 			break;
 
 		case Segment_UpperLegR :
-			tmpGroups.push_back(Joint_highLegR);
 			tmpGroups.push_back(Joint_kneeR);
 			tmpGroups.push_back(Joint_ankleR);
 
@@ -815,7 +800,6 @@ void Skinning::paintWeights(int part, vector<Vertex>& vertices, vector<Joint>& j
 			break;
 
 		case Segment_UpperLegL :
-			tmpGroups.push_back(Joint_highLegL);
 			tmpGroups.push_back(Joint_kneeL);
 			tmpGroups.push_back(Joint_ankleL);
 
@@ -836,7 +820,6 @@ void Skinning::paintWeights(int part, vector<Vertex>& vertices, vector<Joint>& j
 				Vertex* v = &vertices[pelvisMid_pelvisL[i]];
 				Vertex pelvisMid = joints[Joint_pelvisMid].getCoord();
 				Vertex pelvisL = joints[Joint_pelvisL].getCoord();
-				Vertex highLegL = joints[Joint_highLegL].getCoord();
 				Vertex waist = joints[Joint_waist].getCoord();
 
 				v->jointsRelated.clear();
@@ -1454,18 +1437,12 @@ void Skinning::rotateLegR(int part, float degree, vector<Vertex>& vertices, vect
 	}
 
 	Vertex pelvisR = joints[Joint_pelvisR].getCoord();
-	Vertex* highLegR = &joints[Joint_highLegR].getCoord();
 	Vertex* kneeR = &joints[Joint_kneeR].getCoord();
 	Vertex* ankleR = &joints[Joint_ankleR].getCoord();
 
 	if (axis == Axis_X) {
-		float y = highLegR->y - pelvisR.y;
-		float z = highLegR->z - pelvisR.z;
-		highLegR->y = cos(radian) * y - sin(radian) * z + pelvisR.y;
-		highLegR->z = -sin(radian) * y + cos(radian) * z + pelvisR.z;
-
-		y = kneeR->y - pelvisR.y;
-		z = kneeR->z - pelvisR.z;
+		float y = kneeR->y - pelvisR.y;
+		float z = kneeR->z - pelvisR.z;
 		kneeR->y = cos(radian) * y - sin(radian) * z + pelvisR.y;
 		kneeR->z = -sin(radian) * y + cos(radian) * z + pelvisR.z;
 
@@ -1475,13 +1452,8 @@ void Skinning::rotateLegR(int part, float degree, vector<Vertex>& vertices, vect
 		ankleR->z = -sin(radian) * y + cos(radian) * z + pelvisR.z;
 	}
 	else if (axis == Axis_Y) {
-		float x = highLegR->x - pelvisR.x;
-		float z = highLegR->z - pelvisR.z;
-		highLegR->x = cos(radian) * x + sin(radian) * z + pelvisR.x;
-		highLegR->z = -sin(radian) * x + cos(radian) * z + pelvisR.z;
-
-		x = kneeR->x - pelvisR.x;
-		z = kneeR->z - pelvisR.z;
+		float x = kneeR->x - pelvisR.x;
+		float z = kneeR->z - pelvisR.z;
 		kneeR->x = cos(radian) * x + sin(radian) * z + pelvisR.x;
 		kneeR->z = -sin(radian) * x + cos(radian) * z + pelvisR.z;
 
@@ -1491,13 +1463,8 @@ void Skinning::rotateLegR(int part, float degree, vector<Vertex>& vertices, vect
 		ankleR->z = -sin(radian) * x + cos(radian) * z + pelvisR.z;
 	}
 	else if (axis == Axis_Z) {
-		float x = highLegR->x - pelvisR.x;
-		float y = highLegR->y - pelvisR.y;
-		highLegR->x = cos(radian) * x - sin(radian) * y + pelvisR.x;
-		highLegR->y = sin(radian) * x + cos(radian) * y + pelvisR.y;
-
-		x = kneeR->x - pelvisR.x;
-		y = kneeR->y - pelvisR.y;
+		float x = kneeR->x - pelvisR.x;
+		float y = kneeR->y - pelvisR.y;
 		kneeR->x = cos(radian) * x - sin(radian) * y + pelvisR.x;
 		kneeR->y = sin(radian) * x + cos(radian) * y + pelvisR.y;
 
@@ -1573,18 +1540,12 @@ void Skinning::rotateLegL(int part, float degree, vector<Vertex>& vertices, vect
 	}
 
 	Vertex pelvisL = joints[Joint_pelvisL].getCoord();
-	Vertex* highLegL = &joints[Joint_highLegL].getCoord();
 	Vertex* kneeL = &joints[Joint_kneeL].getCoord();
 	Vertex* ankleL = &joints[Joint_ankleL].getCoord();
 
 	if (axis == Axis_X) {
-		float y = highLegL->y - pelvisL.y;
-		float z = highLegL->z - pelvisL.z;
-		highLegL->y = cos(radian) * y - sin(radian) * z + pelvisL.y;
-		highLegL->z = -sin(radian) * y + cos(radian) * z + pelvisL.z;
-
-		y = kneeL->y - pelvisL.y;
-		z = kneeL->z - pelvisL.z;
+		float y = kneeL->y - pelvisL.y;
+		float z = kneeL->z - pelvisL.z;
 		kneeL->y = cos(radian) * y - sin(radian) * z + pelvisL.y; 
 		kneeL->z = -sin(radian) * y + cos(radian) * z + pelvisL.z;
 
@@ -1594,13 +1555,8 @@ void Skinning::rotateLegL(int part, float degree, vector<Vertex>& vertices, vect
 		ankleL->z = -sin(radian) * y + cos(radian) * z + pelvisL.z;
 	}
 	else if (axis == Axis_Y) {
-		float x = highLegL->x - pelvisL.x;
-		float z = highLegL->z - pelvisL.z;
-		highLegL->x = cos(radian) * x + sin(radian) * z + pelvisL.x;
-		highLegL->z = -sin(radian) * x + cos(radian) * z + pelvisL.z;
-
-		x = kneeL->x - pelvisL.x;
-		z = kneeL->z - pelvisL.z;
+		float x = kneeL->x - pelvisL.x;
+		float z = kneeL->z - pelvisL.z;
 		kneeL->x = cos(radian) * x + sin(radian) * z + pelvisL.x;
 		kneeL->z = -sin(radian) * x + cos(radian) * z + pelvisL.z;
 
@@ -1610,13 +1566,8 @@ void Skinning::rotateLegL(int part, float degree, vector<Vertex>& vertices, vect
 		ankleL->z = -sin(radian) * x + cos(radian) * z + pelvisL.z;
 	}
 	else if (axis == Axis_Z) {
-		float x = highLegL->x - pelvisL.x;
-		float y = highLegL->y - pelvisL.y;
-		highLegL->x = cos(radian) * x - sin(radian) * y + pelvisL.x;
-		highLegL->y = sin(radian) * x + cos(radian) * y + pelvisL.y;
-
-		x = kneeL->x - pelvisL.x;
-		y = kneeL->y - pelvisL.y;
+		float x = kneeL->x - pelvisL.x;
+		float y = kneeL->y - pelvisL.y;
 		kneeL->x = cos(radian) * x - sin(radian) * y + pelvisL.x;
 		kneeL->y = sin(radian) * x + cos(radian) * y + pelvisL.y;
 
@@ -1813,5 +1764,85 @@ void Skinning::updateRigs(vector<Vertex>& vertices, vector<Joint>& joints) {
 			j->x = 0;
 		else
 			j->x = (vertices[rv[0]].x + vertices[rv[1]].x) / 2;
+	}
+}
+
+void Skinning::deform(int pivotIndex, float degree, vector<int>& currBones, vector<Bone>& bones, vector<int> boneSegment[], vector<float> boneWeight[], vector<Vertex>& vertices, vector<Joint>& joints) {
+	float radian = degree * M_PI / 180;
+
+	/*** SORT OUT duplicates ***/
+	vector<int> vertIndices;
+	vector<int> copyVertIndices;
+	for (int i = 0; i < currBones.size(); i++) {
+		for (int j = 0; j < boneSegment[currBones[i]].size(); j++) {
+			vertIndices.push_back(boneSegment[currBones[i]][j]);
+		}
+	}
+
+	sort(vertIndices.begin(), vertIndices.end());
+
+	for (int i = 0; i < vertIndices.size(); i++) {
+		if (copyVertIndices.size() > 1) {
+			if (copyVertIndices[copyVertIndices.size() - 1] == vertIndices[i])
+				continue;
+		}
+		copyVertIndices.push_back(vertIndices[i]);
+	}
+
+	vertIndices.clear();
+	vertIndices.insert(vertIndices.end(), copyVertIndices.begin(), copyVertIndices.end());
+
+	Vertex pivotJoint = joints[pivotIndex].getCoord();
+
+	for (int i = 0; i < vertIndices.size(); i++) {
+		int vertIdx = vertIndices[i];
+		Vertex* currVert = &vertices[vertIdx];
+
+		float weight = 0;
+		float new_x = 0, new_y = 0, new_z = 0;
+		float x = currVert->x - pivotJoint.x;
+		float y = currVert->y - pivotJoint.y;
+		float z = currVert->z - pivotJoint.z;
+
+		for (int j = 0; j < vertices[vertIdx].refBone.size(); j++) {
+			int currBone = vertices[vertIdx].refBone[j];
+			float currWeight = vertices[vertIdx].refWeight[j];
+
+			if (currBone == -1)
+				continue;
+
+			for (int k = 0; k < currBones.size(); k++) {
+				if (currBones[k] == currBone) { // Effected only by those participating in deformation
+
+					if (axis == Axis_Z) {
+						new_x += currWeight * (cos(radian) * x - sin(radian) * y + pivotJoint.x);
+						new_y += currWeight * (sin(radian) * x + cos(radian) * y + pivotJoint.y);
+					}
+					weight += currWeight;
+				}
+			}
+		}
+
+		if (axis == Axis_Z) {
+			new_x += (1 - weight) * (x + pivotJoint.x);
+			new_y += (1 - weight) * (y + pivotJoint.y);
+		}
+
+		if (axis == Axis_Z) {
+			currVert->x = new_x;
+			currVert->y = new_y;
+		}
+	}
+
+	for (int i = 0; i < currBones.size(); i++) {
+		int currBone = currBones[i];
+		Vertex* lowerJoint = &joints[bones[currBone].lowerJoint].getCoord();
+		float x = lowerJoint->x - pivotJoint.x;
+		float y = lowerJoint->y - pivotJoint.y;
+
+		if (axis == Axis_Z) {
+			lowerJoint->x = cos(radian) * x - sin(radian) * y + pivotJoint.x;
+			lowerJoint->y = sin(radian) * x + cos(radian) * y + pivotJoint.y;
+		}
 	}
 }

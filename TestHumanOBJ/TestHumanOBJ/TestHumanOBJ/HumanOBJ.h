@@ -32,6 +32,7 @@ void centering(float, float, float);
 
 void setRigs();
 void setFeatures();
+void defineBones();
 
 extern "C" HUMANOBJ_API void initOBJ();
 extern "C" HUMANOBJ_API void loadHuman(char*);
@@ -64,7 +65,6 @@ extern "C" HUMANOBJ_API float getHeight();
 extern "C" HUMANOBJ_API float getBustSize();
 extern "C" HUMANOBJ_API float getWaistSize();
 extern "C" HUMANOBJ_API float getHipSize();
-
 
 extern "C" HUMANOBJ_API void getSizeName(int, char*);
 extern "C" HUMANOBJ_API int getSizePathLength(int);

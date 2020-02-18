@@ -29,6 +29,9 @@ public:
 	vector<int> meshIds;
 	bool updated = false;
 
+	vector<int> refBone;
+	vector<float> refWeight;
+
 	vector<int> jointsRelated;
 	vector<float> jointWeights;
 

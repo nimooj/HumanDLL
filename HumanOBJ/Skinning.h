@@ -4,10 +4,12 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #define _USE_MATH_DEFINES
 
 #include "BodySegments.h"
 #include "JointDefinition.h"
+#include "BoneDefinition.h"
 #include "Joint.h"
 #include "Bone.h"
 
@@ -65,6 +67,8 @@ public :
 	void rotateLegL(int, float, vector<Vertex>&, vector<Joint>&);
 	void rotateKneeR(int, float, vector<Vertex>&, vector<Joint>&);
 	void rotateKneeL(int, float, vector<Vertex>&, vector<Joint>&);
+
+	void deform(int, float, vector<int>&, vector<Bone>&, vector<int>[], vector<float>[], vector<Vertex>&, vector<Joint>&);
 
 private:
 	vector<int> weightIndices;
